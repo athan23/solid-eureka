@@ -8,14 +8,33 @@ typedef struct node {
    struct node *next;
 } node;
 
+void add_empty_head(node **head, int d) {
+   *head = malloc(sizeof(node));
+   (*head)->prev = NULL;
+   (*head)->data = d;
+   (*head)->next = NULL;
+}
+
+void add_first(node **head, int d) {
+   if (*head == NULL) {
+      add_empty_head(head, d);
+   }
+   else {
+      node *n = malloc(sizeof(node));
+      n->prev = NULL;
+      n->data = d;
+      n->next = (*head);
+
+      (*head)->prev = n;
+      *head = n;
+   }
+}
+
 void add_data(node **head, int d) {
    node *temp;
 
    if (*head == NULL) {
-      *head = malloc(sizeof(node));
-      (*head)->prev = NULL;
-      (*head)->data = d;
-      (*head)->next = NULL;
+      add_empty_head(head, d);
    }
    else {
       temp = *head;
@@ -104,14 +123,18 @@ int main(int argc, char *argv[]) {
    node **head = calloc(1, sizeof(node *));
 
    add_data(head, 3);
-   add_data(head, 5);
-   add_data(head, 7);
-   add_data(head, 9);
-   add_data(head, 11);
+   add_first(head, 5);
+   // add_data(head, 5);
+   // add_data(head, 7);
+   // add_data(head, 9);
+   // add_data(head, 11);
 
    print_doubly_linked_list(*head);
 
    delete_all(head);
+
+   add_first(head, 5);
+   add_first(head, 7);
 
    print_doubly_linked_list(*head);
 
